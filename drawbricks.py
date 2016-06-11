@@ -1,5 +1,5 @@
 #coding:utf-8
-# 볼과 패들의 충돌 체크
+# 벽돌 생성하기
 # 벽돌 그리기 
 
 import pygame, sys 
