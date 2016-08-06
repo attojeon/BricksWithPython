@@ -13,7 +13,7 @@
 # 점수 보여주기
 # 튕기는 각도에 랜덤 추가
 
-import pygame, sys, math, random
+import pygame, sys, math
 from pygame.locals import *
 
 BLACK 	= (	0, 	0,	0)
@@ -27,9 +27,9 @@ height = 480
 radius = 10
 bx = width / 2
 by = height / 2
-dx = 2
-dy = 2
-tAngle = 45
+dx = 1
+dy = 1
+tAngle = 70
 
 px = 0
 py = 440
@@ -85,7 +85,7 @@ def drawBricks():
 	for b in bricks:
 		# 추가된 로직 : state == 1일 때에만 그리기 
 		if b[2] == 1 : 
-			pygame.draw.rect(screen, GREEN, (b[0], b[1], brickWidth, brickHeight))
+			pygame.draw.rect(screen, GREEN, (b[0], b[1],brickWidth, brickHeight))
 
 
 def drawBall(x, y, r):
@@ -125,21 +125,19 @@ def updateObject():
 
 def collideCheck():
 	global bx, by, dx, dy, px, py, p_width, p_height, p_vel
-	global bricks_cols, bricks_rows, brickWidth, brickHeight, brickPadding, brickOffsetTop, brickOffsetLeft, tAngle
+	global bricks_cols, bricks_rows, brickWidth, brickHeight, brickPadding, brickOffsetTop, brickOffsetLeft
 	global score
 	# 충돌 체크 - ball & paddle
 	if bx > px and bx < px + p_width and by > py:
 		#dx *= -1
-		#dy *= -1 
-		tAngle = 180 - tAngle + random.randint(-20, 20)
+		dy *= -1 
 		hit.play()
 
 	# 벽돌 충돌 체크 
 	for b in bricks:
 		if bx > b[0] and bx < b[0]+brickWidth and by > b[1] and by < b[1]+brickHeight  and b[2] == 1:  #state == 1일 때에만 체크
 			b[2] = 0
-			#dy *= -1
-			tAngle = 180 - tAngle
+			dy *= -1
 			score += 100
 			hit.play()
 
@@ -161,7 +159,7 @@ def scoreInit():
 	return scoreView
 
 def main():
-	bricksInit()
+	#bricksInit()
 	scoreView = scoreInit()
 
 	while True:
@@ -185,11 +183,11 @@ def main():
 					keys[1] = False
 		
 		updateObject()
-		collideCheck()
-		drawBricks()
+		#collideCheck()
+		#drawBricks()
 		drawBall(bx, by, radius)
-		drawPaddle(px, py)
-		drawScore(screen, scoreView)
+		#drawPaddle(px, py)
+		#drawScore(screen, scoreView)
 		pygame.display.update()
 
 

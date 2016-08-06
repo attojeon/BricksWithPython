@@ -1,19 +1,6 @@
 #coding:utf-8
-# 볼 그리기
-# 볼 그리고 움직이기
-# 볼 그리고 튕기기
-# 패들 그리기
-# 패들 튕기기, 패들 키패드에 반응하기 => keydown에서 문제가 생김*** 어떻게 해결할까?결
-# 키패드 반응 문제 해결
-# updateObject() 함수로 정의
-# 사운드 추가 
-# 볼과 패들의 충돌 체크
-# 벽돌 그리기 
-# 벽돌 충돌 체크
-# 점수 보여주기
-# 튕기는 각도에 랜덤 추가
 
-import pygame, sys, math, random
+import pygame, sys 
 from pygame.locals import *
 
 BLACK 	= (	0, 	0,	0)
@@ -29,7 +16,6 @@ bx = width / 2
 by = height / 2
 dx = 2
 dy = 2
-tAngle = 45
 
 px = 0
 py = 440
@@ -85,7 +71,7 @@ def drawBricks():
 	for b in bricks:
 		# 추가된 로직 : state == 1일 때에만 그리기 
 		if b[2] == 1 : 
-			pygame.draw.rect(screen, GREEN, (b[0], b[1], brickWidth, brickHeight))
+			pygame.draw.rect(screen, GREEN, (b[0], b[1],brickWidth, brickHeight))
 
 
 def drawBall(x, y, r):
@@ -95,20 +81,15 @@ def drawPaddle(x, y):
 	pygame.draw.rect(screen, RED, (px, py, p_width, p_height))
 
 def updateObject():
-	global bx, by, dx, dy, px, py, p_width, p_height, p_vel, tAngle
+	global bx, by, dx, dy, px, py, p_width, p_height, p_vel
 
 	bx += dx
-	#by += dy 
-	by += int( round( math.tan(math.radians(tAngle)) * dx ) ) * -1
-	print "%r %r" % (bx,  by)
-
+	by += dy 
 	if bx > width or bx < 0:
 		dx = dx * (-1)
-		tAngle = 180 - tAngle
 		hit.play()
 	if by > height or by < 0:
-		#dy = dy * (-1)
-		tAngle = 180 - tAngle
+		dy = dy * (-1)
 		hit.play()
 
 	if keys[0] == True:
@@ -125,21 +106,19 @@ def updateObject():
 
 def collideCheck():
 	global bx, by, dx, dy, px, py, p_width, p_height, p_vel
-	global bricks_cols, bricks_rows, brickWidth, brickHeight, brickPadding, brickOffsetTop, brickOffsetLeft, tAngle
+	global bricks_cols, bricks_rows, brickWidth, brickHeight, brickPadding, brickOffsetTop, brickOffsetLeft
 	global score
 	# 충돌 체크 - ball & paddle
 	if bx > px and bx < px + p_width and by > py:
 		#dx *= -1
-		#dy *= -1 
-		tAngle = 180 - tAngle + random.randint(-20, 20)
+		dy *= -1 
 		hit.play()
 
 	# 벽돌 충돌 체크 
 	for b in bricks:
 		if bx > b[0] and bx < b[0]+brickWidth and by > b[1] and by < b[1]+brickHeight  and b[2] == 1:  #state == 1일 때에만 체크
 			b[2] = 0
-			#dy *= -1
-			tAngle = 180 - tAngle
+			dy *= -1
 			score += 100
 			hit.play()
 
