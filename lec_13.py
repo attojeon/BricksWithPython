@@ -100,7 +100,7 @@ def updateObject():
 	bx += dx
 	#by += dy 
 	by += int( round( math.tan(math.radians(tAngle)) * dx ) ) * -1
-	print "%r %r" % (bx,  by)
+	print ("%r %r") % (bx,  by)
 
 	if bx > width or bx < 0:
 		dx = dx * (-1)
